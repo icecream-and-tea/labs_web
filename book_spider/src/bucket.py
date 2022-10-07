@@ -4,8 +4,8 @@ from qcloud_cos import CosS3Client
 import sys
 
 appid = 1311300121
-secret_id = u'AKIDRL0OWMvDFzSeYBXcQyEExQcW9VaOvCCv'
-secret_key = u'TfbGfogIejX5LK2UfZCYdz5uTllVyA5i'
+secret_id = u'xxx'
+secret_key = u'xxx'
 region = u'ap-guangzhou'
 token = None
 scheme = 'https'
