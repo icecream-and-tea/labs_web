@@ -6,10 +6,11 @@ from bs4 import BeautifulSoup
 
 
 # 第二次爬取电影列表：官方小站， 动画片
-# movieList = ['3541415', '3742360', '1291543', '4271894', '3412830', '4226741', '3546019', '1437342', '2326676',
-#              '3560787', '4151110', '4896263', '1300395', '1792928', '1310174', '4822848', '1295250', '4190211',
-#              '4057312', '1305724', '1408100', '1449381', '1401524', '3792816', '1470591', '3041294', '4059245',
-#              '1434184', '1483507', '1431685', '1761854', '1295428', '4888039', '1431946']
+movieList = ['3742360', '1291543', '4271894', '3412830', '1309046', '1297223', '4226741', '3546019', '1437342', '2326676',
+ '3560787', '4151110', '1768351', '1293691', '4896263', '1300395', '3882715', '1792928', '1292790', '1310174',
+ '1295250', '1292331', '4190211', '4057312', '1305724', '1316505', '1408100', '1796939', '1449381', '1401524',
+ '3792816', '1470591', '3041294', '4059245', '1434184', '1483507', '1307528', '1431685', '1761854', '2043126',
+ '1308988', '1829626', '1295428', '4888039', '1431946', '1305088']
 
 
 def main_handler(event, context):
@@ -17,8 +18,8 @@ def main_handler(event, context):
     print(event)
 
     # 打开id集合文件，将id存放于列表中
-    infile = open('../doc/Movie_id.txt', 'r', encoding='utf8')
-    movieList = infile.read().split()
+    # infile = open('../doc/Movie_id.txt', 'r', encoding='utf8')
+    # movieList = infile.read().split()
 
     # 生成爬虫与解析器
     spider = Spider()
@@ -39,7 +40,7 @@ def main_handler(event, context):
                 continue  # 空页面
             # 使用bs4库对html进行解析
             soup = BeautifulSoup(html, 'html.parser')
-            parser = Parser(soup)
+            parser = Parser(soup, movieId)
 
             # 先将解析字典存入列表，最后进行json格式转换
             res.append(parser.run())
@@ -61,5 +62,6 @@ def main_handler(event, context):
     json.dump(res, outfile, ensure_ascii=False, indent=1)
 
 
-main_handler({'queryString': ''}, None)
+if __name__ == "__main__":
+    main_handler({'queryString': ''}, None)
 

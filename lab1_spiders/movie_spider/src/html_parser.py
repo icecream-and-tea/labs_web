@@ -4,7 +4,8 @@ from bs4 import BeautifulSoup
 
 class Parser(object):
 
-    def __init__(self, soup):
+    def __init__(self, soup, movieId):
+        self.id = movieId
         self.title = soup.find('span', property="v:itemreviewed")
         self.imgLink = soup.find('a', class_='nbgnbg')
         self.summary = soup.find('span', class_="all hidden")
@@ -24,6 +25,7 @@ class Parser(object):
         movieDict = dict()
 
         # 将信息整合到moveiDict中
+        movieDict['id'] = self.id
         movieDict['基本信息'] = self.parse_info()
         movieDict['剧情简介'] = self.parse_summary()
         movieDict['演职员'] = self.parse_celebrites()
