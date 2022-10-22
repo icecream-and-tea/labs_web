@@ -1,11 +1,12 @@
 import json
 import csv
+import re
 
 if __name__ == "__main__":
     res = list()
     error_list = list()
 
-    movie_file = '../lab1_spiders/movie_spider/doc/json/info_movie_repair.json'
+    movie_file = '../../lab1_spiders/movie_spider/doc/json/info_movie.json'
     with open(movie_file, encoding='utf-8') as f:
         info = json.load(f)
 
@@ -26,6 +27,6 @@ if __name__ == "__main__":
                     movie_info['基本信息']['类型'].append(label)
         res.append(movie_info)
 
-    output = '../lab1_spiders/movie_spider/doc/json/info_movie_test.json'
+    output = '../../lab1_spiders/movie_spider/doc/json/info_movie_test.json'
     with open(output, 'w', encoding='utf-8') as f:
         json.dump(res, f, ensure_ascii=False, indent=1)
