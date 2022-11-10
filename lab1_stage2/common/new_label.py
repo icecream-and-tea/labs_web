@@ -11,7 +11,7 @@ if __name__ == "__main__":
         info = json.load(f)
 
     label_dict = dict()
-    csv_file = './doc/Movie_tag.csv'
+    csv_file = './doc/tag/Movie_tag.csv'
     with open(csv_file, 'r', encoding='utf-8') as f:
         reader = csv.DictReader(f)
         for row in reader:

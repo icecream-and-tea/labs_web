@@ -1,5 +1,4 @@
 import json
-# 分词
 
 
 # 对同近义词表进行改变
@@ -22,7 +21,7 @@ def read_txt(inputPath):
 
 # input: 离谱的同近义词词表
 # output: 以分词中第一次出现的词作为代表元的词表 / 出现最多的词
-def modify_syno_list(inputPath, wordList):
+def modify_syno_list(inputPath, outputPath, wordList):
     with open(inputPath, 'r', encoding='utf8') as f:
         data = json.load(f)
     freqList = [0]*len(wordList)
@@ -53,18 +52,16 @@ def modify_syno_list(inputPath, wordList):
             if freqList[max] != 0:  # 这组被用到过才加入
                 newSynoLists.append(synoList)
 
-    with open('../doc/new_syno_list', 'w', encoding='utf-8') as f:
+    with open(outputPath, 'w', encoding='utf-8') as f:
         json.dump(newSynoLists, f, ensure_ascii=False, indent=1)
 
 
 if __name__ == "__main__":
     txtPath = '../doc/chinese_dictionary/dict_synonym.txt'
     movieInput = '../doc/words_movies.json'
-    # bookInput = '../doc/words_books.json'
-    # movieOutput = '../doc/nosyn_words_movies.json'
-    # bookOutput = '../doc/nosyn_words_books.json'
-
+    movieOutput = '../doc/syno_dict_movies.json'
+    bookInput = '../doc/words_books.json'
+    bookOutput = '../doc/syno_dict_books.json'
     wordList = read_txt(txtPath)
-    modify_synoList(movieInput, wordList)
-    # merge_syn(movieInput, movieOutput, wordList)
-    # merge_syn(bookInput, bookOutput, wordList)
+    modify_syno_list(movieInput, movieOutput, wordList)
+    # modify_syno_list(bookInput, bookOutput, wordList)

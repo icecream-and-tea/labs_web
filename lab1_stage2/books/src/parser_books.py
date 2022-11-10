@@ -4,8 +4,8 @@ import json
 
 seg = pkuseg.pkuseg('D:\python\Lib\site-packages\pkuseg\default_v2')  # 开启词性标注功能
 filename_input = '../../lab1_spiders/book_spider/doc/json/info_book.json'
-filename_output = '../doc/words_books.json'
-filename_stopwords = '../doc/stop_words_books.json'
+filename_output = '../books/doc/words_books.json'
+filename_stopwords = '../books/doc/stop_words_books.json'
 words_set = []
 
 with open(filename_input, encoding='UTF-8') as f_info:  # 加上encoding参数，否则会解码报错

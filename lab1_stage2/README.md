@@ -6,26 +6,37 @@
 * `info_book.json, info_movie.json`分别是stage1爬取的书籍与电影信息。
 * `words_books.json, words_movies.json`是分词之后的结果。
 * `stop_words_books.json, stop_words_movies.json`是分词过程中使用的停用词，由于内容偏向性不同，两个文件有少量词语存在差别。
-```
+* `syno_dict_books.json, syno_dict_movies.json`是基于`dict_synonym.txt`生成的特色同近义词词表（同组近义词合并到出现频率最高的那个词）
+
+```angular2html
 .
-├── README.md                            ---> 你在这里
-├── doc
-│   ├── Book_tag.csv                     ---> 助教给的词库
-│   ├── Movie_tag.csv                   
-│   ├── new_book_id.txt                  ---> 通过爬取的数据生成的新的id-num文档
-│   ├── new_movie_id.txt
-│   ├── posting_list_books.json          ---> 根据分词结果构造的倒排表(通过dic嵌套list实现)
-│   ├── posting_list_movies.json
-│   ├── stop_words_books.json            ---> 停用词表
-│   ├── stop_words_movies.json
-│   ├── words_books.json　　　　　　　　 ---> 分词结果
-│   └── words_movies.json
-└── src
-    ├── new_label.py                     ---> 处理新标签
-    ├── parser_books.py                  ---> 分词程序
-    ├── parser_movies.py
-    ├── posting_list_book.py             ---> 倒排表程序
-    └── posting_list_movies.py
+|-- README.md                            ---> 你在这里
+|-- doc
+|   |-- Book_tag.csv                     ---> 助教给的词库
+|   |-- Movie_tag.csv
+|   |-- chinese_dictionary               ---> 中文关系词表
+|   |   |-- dict_antonym.txt
+|   |   |-- dict_negative.txt
+|   |   `-- dict_synonym.txt
+|   |-- new_book_id.txt                  ---> 通过爬取的数据生成的新的id-num文档
+|   |-- new_movie_id.txt
+|   |-- posting_list_books.json          ---> 根据分词结果构造的倒排表(通过dic嵌套list实现)
+|   |-- posting_list_movies.json
+|   |-- stop_words_books.json            ---> 停用词表
+|   |-- stop_words_movies.json
+|   |-- syno_dict_books.json             ---> 同义词字典，根据出现词的频率不同设置主词
+|   |-- syno_dict_movies.json
+|   |-- words_books.json　　　　　　　　  ---> 分词结果
+|   `-- words_movies.json
+`-- src
+    |-- merge_synonym.py                 ---> 同近义词合并
+    |-- modify_synonym_list.py           ---> 生成同近义词词表
+    |-- new_label.py                     ---> 处理新标签
+    |-- parser_books.py                  ---> 分词程序
+    |-- parser_movies.py
+    |-- posting_list_book.py             ---> 倒排表程序
+    `-- posting_list_movies.py
+
 ```
 
 ## 分词使用到的库或工具包
