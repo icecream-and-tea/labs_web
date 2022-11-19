@@ -10,14 +10,15 @@ class Merger(object):
         res = []
         for word in words:
             flag = False
-            for item in self.synList:
+            for item in self.synList:   # 若有同近义词，则转化成“标准词语”，加入res
                 if word in item:
-                    res.append(item[0])
+                    if item[0] not in res:  # 防止重复添加
+                        res.append(item[0])
                     flag = True
                     break
-            if not flag and word not in res:
+            if not flag and word not in res:    # 若没有同近义词且不在res里，则加入res
                 res.append(word)
-        return res
+        return res  # 返回
 
     # 对文件进行合并
     def run(self, inputPath, outputPath):
@@ -27,20 +28,27 @@ class Merger(object):
 
         for words in data:
             res.append(self.merge_syn(words))
+            print(len(res))
 
         with open(outputPath, 'w', encoding='utf-8') as f:
             json.dump(res, f, ensure_ascii=False, indent=1)
 
 
 if __name__ == "__main__":
-    movieInput = '../doc/words_movies.json'
-    bookInput = '../doc/words_books.json'
-    movieOutput = '../doc/nosyn_words_movies.json'
-    bookOutput = '../doc/nosyn_words_books.json'
+    movieInput = '../movies/doc/words_movies.json'
+    bookInput = '../books/doc/words_books.json'
+    movieOutput = '../movies/doc/no_syn_words_movies.json'
+    bookOutput = '../books/doc/no_syn_words_books.json'
 
-    synListPath = '../doc/new_syno_list.json'
-    with open(synListPath, 'r', encoding='utf8') as f:
+    synListPath_movies = '../movies/doc/syno_dict_movies.json'
+    with open(synListPath_movies, 'r', encoding='utf8') as f:
         synList = json.load(f)
     merger = Merger(synList)
     merger.run(movieInput, movieOutput)
+
+    synListPath_books = '../books/doc/syno_dict_books.json'
+    with open(synListPath_books, 'r', encoding='utf8') as f:
+        synList = json.load(f)
+    merger = Merger(synList)
+    merger.run(bookInput, bookOutput)
 
