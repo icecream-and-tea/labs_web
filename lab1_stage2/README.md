@@ -2,63 +2,45 @@
 
 ## 目录结构
 
-* `parser_books.py, parser_movies.py`分别是对书籍，电影进行分词的程序。
-* `info_book.json, info_movie.json`分别是stage1爬取的书籍与电影信息。
-* `words_books.json, words_movies.json`是分词之后的结果。
-* `stop_words_books.json, stop_words_movies.json`是分词过程中使用的停用词，由于内容偏向性不同，两个文件有少量词语存在差别。
-* `syno_dict_books.json, syno_dict_movies.json`是基于`dict_synonym.txt`生成的特色同近义词词表（同组近义词合并到出现频率最高的那个词）
-
-```angular2html
+```
 .
 |-- README.md                            ---> 你在这里
-|-- doc
-|   |-- Book_tag.csv                     ---> 助教给的词库
-|   |-- Movie_tag.csv
-|   |-- chinese_dictionary               ---> 中文关系词表
-|   |   |-- dict_antonym.txt
-|   |   |-- dict_negative.txt
-|   |   `-- dict_synonym.txt
-|   |-- new_book_id.txt                  ---> 通过爬取的数据生成的新的id-num文档
-|   |-- new_movie_id.txt
-|   |-- posting_list_books.json          ---> 根据分词结果构造的倒排表(通过dic嵌套list实现)
-|   |-- posting_list_movies.json
-|   |-- stop_words_books.json            ---> 停用词表
-|   |-- stop_words_movies.json
-|   |-- syno_dict_books.json             ---> 同义词字典，根据出现词的频率不同设置主词
-|   |-- syno_dict_movies.json
-|   |-- words_books.json　　　　　　　　  ---> 分词结果
-|   `-- words_movies.json
-`-- src
-    |-- merge_synonym.py                 ---> 同近义词合并
-    |-- modify_synonym_list.py           ---> 生成同近义词词表
-    |-- new_label.py                     ---> 处理新标签
-    |-- parser_books.py                  ---> 分词程序
-    |-- parser_movies.py
-    |-- posting_list_book.py             ---> 倒排表程序
-    `-- posting_list_movies.py
-
+|-- __init__.py                          ---> 没写，也没用
+|-- books                                ---> 书籍相关的代码
+|   |-- doc                              
+|   |   |-- Book_tag.csv                 ---> 新的tag
+|   |   |-- new_books_id.txt             ---> 去除坏结点的电影id列表
+|   |   |-- no_syn_words_books.json      ---> 经过去停用词，合并近义词的分词结果
+|   |   |-- posting_list_books.json      ---> 书籍的倒排表
+|   |   |-- stop_words_books.json        ---> 书籍的停用词表
+|   |   |-- syno_dict_books.json         ---> 书籍的同近义词表
+|   |   `-- words_books.json             ---> 最原始的分词结果
+|   `-- src
+|       |-- parser_books.py              ---> 对书籍信息进行分词
+|       `-- posting_list_book.py         ---> 建立倒排表的
+|-- common
+|   |-- bool_inquire                     ---> 处理用户输入，显示最终结果
+|   |   |-- compress.py                  ---> 对压缩后的倒排表解码
+|   |   |-- main.py                      ---> 主程序
+|   |   |-- search.py                    ---> 进行布尔查询和合并
+|   |   `-- user_input_process.py        ---> 对布尔表达式预处理
+|   |-- new_label.py                     ---> 加新tag的程序
+|   `-- synonym
+|       |-- dict_synonym.txt             ---> 最原始的同近义词表
+|       |-- merge_synonym.py             ---> 进行同近义词合并
+|       `-- modify_synonym_list.py       ---> 针对特定集合生成特定的同近义词表
+`-- movies                               ---> 与书籍相同，不再注释
+    |-- doc
+    |   |-- Movie_tag.csv
+    |   |-- new_movies_id.txt
+    |   |-- no_syn_words_movies.json
+    |   |-- posting_list_movies.json
+    |   |-- stop_words_movies.json
+    |   |-- syno_dict_movies.json
+    |   `-- words_movies.json
+    `-- src
+        |-- __pycache__
+        |-- parser_movies.py
+        `-- posting_list_movies.py
 ```
 
-## 分词使用到的库或工具包
-
-* 分词程序运行在python3.10版本上，需要安装[pkuseg分词工具](https://github.com/lancopku/pkuseg-python)。
-* 停用词在[中文常用停用词表](https://github.com/goto456/stopwords/blob/master/cn_stopwords.txt)的基础上，针对所爬取的内容，添加了一些词语。
-
-## 构建倒排表
-* 前置操作：
-
-	通过 stage 1 爬出来的数据建立`new_***_id.txt`，此时保存了`id_num_list[]`以供后续程序使用。
-
-* 倒排表结构：
-
-	```python
-	dic = {
-	    key1: [n1, ...],
-	    key2: [n2, ...],
-	    ...
-	}
-	```
-
-* 构建倒排表：
-	* 根据分词结果，遍历`words_***.json`文件，将分词加入到`dic`的关键词`key`中。对于每个关键词`key`，`value`值为所有出现该分词的`id`对应的`num`的列表。
-	* 对于每个关键词`key`后的列表，利用`sort()`升序排列以便构造跳表。

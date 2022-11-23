@@ -3,9 +3,9 @@ import pkuseg
 import json
 
 seg = pkuseg.pkuseg('D:\python\Lib\site-packages\pkuseg\default_v2')  # 开启词性标注功能
-filename_input = '../../lab1_spiders/book_spider/doc/json/info_book.json'
-filename_output = '../books/doc/words_books.json'
-filename_stopwords = '../books/doc/stop_words_books.json'
+filename_input = '../../../lab1_stage1/book_spider/doc/json/info_book.json'
+filename_output = '../doc/words_books.json'
+filename_stopwords = '../doc/stop_words_books.json'
 words_set = []
 
 with open(filename_input, encoding='UTF-8') as f_info:  # 加上encoding参数，否则会解码报错
@@ -52,16 +52,17 @@ for book in info:
         keywords.append(series)
 
     key_words_temp = keywords[:]
-    for member in key_words_temp:
+    for member in key_words_temp:   # 去除停用词
         if member in stop_words:
             keywords.remove(member)
     merged_keywords = []
-    for word in keywords:
+    for word in keywords:   # 合并相同词
         if word not in merged_keywords:
             merged_keywords.append(word)
 
     print(merged_keywords)
     words_set.append(merged_keywords)
 
+print(len(words_set))
 with open(filename_output, 'w', encoding="UTF-8") as f_output:  # 以写入模式打开文件
     json.dump(words_set, f_output, ensure_ascii=False, indent=4)

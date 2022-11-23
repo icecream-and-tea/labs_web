@@ -32,15 +32,16 @@ class Merger(object):
             json.dump(res, f, ensure_ascii=False, indent=1)
 
 
-if __name__ == "__main__":
-    movieInput = '../doc/words_movies.json'
-    bookInput = '../doc/words_books.json'
-    movieOutput = '../doc/nosyn_words_movies.json'
-    bookOutput = '../doc/nosyn_words_books.json'
-
-    synListPath = '../doc/new_syno_list.json'
-    with open(synListPath, 'r', encoding='utf8') as f:
-        synList = json.load(f)
-    merger = Merger(synList)
-    merger.run(movieInput, movieOutput)
+# if __name__ == "__main__":
+#     # 框架已重构，需改路径
+#     movieInput = '../doc/words_movies.json'
+#     bookInput = '../doc/words_books.json'
+#     movieOutput = '../doc/nosyn_words_movies.json'
+#     bookOutput = '../doc/nosyn_words_books.json'
+#
+#     synListPath = '../doc/new_syno_list.json'
+#     with open(synListPath, 'r', encoding='utf8') as f:
+#         synList = json.load(f)
+#     merger = Merger(synList)
+#     merger.run(movieInput, movieOutput)
 
